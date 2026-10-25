@@ -1,59 +1,177 @@
 # HeraHealth — Women’s Healthcare MVP
 
-HeraHealth helps users keep a symptom journal, view descriptive summaries of their own records, compare reported daily-life impact across two 7-day windows, and prepare a printable visit summary. It does not diagnose or replace professional medical care. Use fictional data for hackathon demos.
+**Live Demo:** [Add your deployed HeraHealth URL here](YOUR_DEPLOYED_APP_URL)  
+**GitHub Repository:** [Add your public repository URL here](YOUR_PUBLIC_GITHUB_REPOSITORY_URL)
 
-## Features in this build
-- Account registration/sign-in with Werkzeug password hashing and session-based access to a user's own entries.
-- Optional profile details and user-authored questions for a clinician.
-- Symptom create/read/update/delete with date/symptom filtering and input validation.
-- Insights calculated from actual records, including severity trend and descriptive impact comparison.
-- Printable visit summary with date filtering and custom questions.
-- Health guidance with links to WHO, NHS and MedlinePlus; check source pages for latest updates.
-- Optional note organiser. Without `GEMINI_API_KEY`, a local fallback only cleans whitespace. If configured, Gemini is used to rewrite notes neutrally; users should review output. No diagnosis is requested.
-- Theme preference is stored in the browser.
+HeraHealth is a women’s healthcare tracking and visit-preparation web application. It helps users organise symptom records, track menstrual-cycle dates, review descriptive summaries of their own records, and prepare questions and a printable summary for a healthcare visit.
 
-## Run locally
-1. Use Python 3.11 or newer.
-2. Install dependencies: `pip install -r requirements.txt`
-3. Start the app: `python app.py`
-4. Open `http://127.0.0.1:5000`.
+HeraHealth is **not a diagnostic tool** and does not replace professional medical care. Use fictional data for hackathon demonstrations. Do not enter real sensitive health information into this prototype.
 
-## Render deployment
-- Build command: `pip install -r requirements.txt`
-- Start command: `gunicorn app:app`
-- Set `SECRET_KEY` to a long random value in Render Environment.
-- For production-like HTTPS cookies, set `COOKIE_SECURE=1` once HTTPS is active.
-- To use optional Gemini note rewriting, add `GEMINI_API_KEY` as a secret environment variable. The app still works without it.
-- **Persistence:** the app reads `DATABASE_PATH`. For a Render Web Service with a persistent disk attached, mount the disk at `/var/data` and set `DATABASE_PATH=/var/data/herahealth.db`. Check current Render plan/availability and disk pricing before choosing this. A standard ephemeral filesystem can lose SQLite data after restart/redeploy. Do not put the database file in GitHub.
+## Key Features
 
-## Important limitations
-This is a hackathon prototype, not a production healthcare system. It has not undergone security, privacy, accessibility, or clinical validation audits. Do not store real sensitive health data. Before any real-world use, add CSRF protection, password reset and email verification, rate limiting, stronger session/security policies, privacy consent and deletion/export controls, audit logging, secure deployment/storage, and professional clinical review of health content. Basic account functionality is provided for MVP demonstration only.
+- **Account registration and sign-in:** Passwords are hashed with Werkzeug, and session-based access is used for account-specific records.
+- **Symptom journal:** Create, view, edit, and delete symptom entries. Filter records by date or symptom and enter severity, duration, notes, and daily-life impact.
+- **Personal insights:** View descriptive severity trends and compare self-reported daily-life impact across two 7-day windows. These summaries describe the records entered by the user; they are not clinical conclusions.
+- **Menstrual cycle tracking:** Record period start and end dates, view recorded history, and calculate intervals between recorded start dates when enough records are available. These intervals are descriptive only and are not suitable for contraception or diagnosis.
+- **Health calendar:** View recorded period dates alongside symptom entries. If an end date is not recorded, the calendar marks only the recorded start date rather than assuming the period duration.
+- **Doctor visit preparation:** Save questions for a clinician and an optional medication/supplement list. Include relevant records in a printable visit summary.
+- **Health guidance:** Access general educational information and links to sources such as WHO, NHS, and MedlinePlus. Refer to the source websites for current information.
+- **In-app reminders:** Create, pause/activate, and delete symptom-tracking reminders. These are in-app reminders only; they do not send push notifications or alarms.
+- **Display settings:** Choose browser-local theme, font-size, and density preferences.
+- **Optional Health Assistant and note organiser:** If `GEMINI_API_KEY` is configured and the API request succeeds, the app can use Gemini for general health education and neutral note rewriting. Without a key, or if a request fails, the Health Assistant uses local general guidance and the note organiser only cleans whitespace. AI output should be reviewed by the user. These features do not diagnose or recommend treatment.
 
+## Technology Stack
 
-## Added in this revision
-- Personal in-app symptom tracking reminders (create, pause/activate, delete). They do not send push notifications or alarms.
-- Display Settings page with browser-local theme, font-size and density preferences.
-- HeraHealth Assistant page with optional Gemini-powered general education responses and a safe local fallback.
-- Dashboard links and reminder summary.
-- Reminder data is scoped to the signed-in account.
+- **Frontend:** HTML templates, CSS, and JavaScript
+- **Backend:** Python and Flask
+- **Database:** SQLite
+- **Authentication utilities:** Werkzeug password hashing, used with Flask session-based access
+- **Deployment server:** Gunicorn
+- **Optional external service:** Google Gemini API for selected assistant/note-organising functions
 
-## Deployment notes
-- Set `SECRET_KEY` to a long random value in Render environment variables.
-- Set `COOKIE_SECURE=1` when serving HTTPS in production.
-- For persistent SQLite on Render, attach a persistent disk and set `DATABASE_PATH` to a path on that disk. Otherwise use a managed persistent database.
-- Do not use real sensitive health information in this hackathon prototype. It has not undergone a security audit.
-- `GEMINI_API_KEY` is optional; never commit it to GitHub.
+The core tracking, cycle-record, insight, reminder, and visit-preparation workflows do not require a Gemini API key.
 
-## Added women’s-health features
-- **Cycle Tracking**: records period start/end dates, keeps per-user history, calculates intervals between recorded starts, and shows symptom journal entries on dates within the recorded period. Any interval summary is descriptive only, is shown only with enough records, and is not suitable for contraception or diagnosis.
-- **Doctor Visit Preparation**: questions for the clinician and an optional medication/supplement list can be saved to the signed-in user's profile and included in the print/PDF summary.
-- Existing records and reminders remain in the same SQLite database. The app includes a backwards-compatible migration for the new user field and menstrual-cycle table.
+## Requirements
 
+- Python 3.11 or newer
+- Dependencies listed in `requirements.txt`:
+  - `Flask>=3.0,<4.0`
+  - `gunicorn>=22.0,<24.0`
 
-### Optional Gemini Health Assistant
+SQLite is accessed through Python's standard-library `sqlite3` module. Werkzeug is installed as a Flask dependency.
 
-The Health Assistant uses the Gemini API when `GEMINI_API_KEY` is configured. The key must be stored as a server-side environment variable (for Render, add it under the service's Environment settings). Do not place a real key in HTML, JavaScript, source control, or screenshots. If the key is missing or the API request fails, HeraHealth shows local general health-education guidance instead. The assistant is not a diagnostic tool.
+## Run Locally
 
-### Health Calendar period markers
+1. Install Python 3.11 or newer.
+2. Download or clone this repository and open a terminal in the project directory (the directory containing `app.py` and `requirements.txt`).
+3. Create and activate a virtual environment (recommended).
 
-The Health Calendar displays saved menstrual-period dates alongside symptom entries. A recorded start/end range marks the dates entered by the user; if no end date is recorded, only the start date is marked so the calendar does not assume an unknown duration. Period records are private to the logged-in account.
+   **Windows PowerShell:**
+
+   ```powershell
+   py -3.11 -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+   **macOS/Linux:**
+
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+4. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Set a strong `SECRET_KEY` environment variable before running the app. Do not use the development fallback secret for a deployed or shared environment.
+
+   **Windows PowerShell:**
+
+   ```powershell
+   $env:SECRET_KEY = "replace-with-a-long-random-secret"
+   ```
+
+   **macOS/Linux:**
+
+   ```bash
+   export SECRET_KEY="replace-with-a-long-random-secret"
+   ```
+
+6. Start the application:
+
+   ```bash
+   python app.py
+   ```
+
+7. Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
+
+The application creates/initialises its SQLite database when needed. By default, the database file is `herahealth.db` in the application directory. You can set `DATABASE_PATH` to use another location.
+
+## Optional Gemini Configuration
+
+HeraHealth can run without Gemini. To enable the optional Gemini-backed functions:
+
+1. Obtain an API key through the official Google AI developer service.
+2. Set `GEMINI_API_KEY` as a server-side environment variable.
+3. Restart/redeploy the application and test the relevant feature end-to-end.
+
+Never commit an API key to GitHub or put it in HTML, JavaScript, screenshots, or other public files. The presence of optional integration code does not by itself prove that the external API is configured or working.
+
+## Deploy to Render
+
+1. Push the project files to a **public GitHub repository** so hackathon judges can access the source code.
+2. Create a Render Web Service connected to that repository.
+3. Use these commands:
+
+   **Build Command**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   **Start Command**
+
+   ```bash
+   gunicorn app:app
+   ```
+
+4. In Render's Environment settings, set:
+   - `SECRET_KEY` — a long, randomly generated secret.
+   - `COOKIE_SECURE=1` — set when the app is served over HTTPS.
+   - `DATABASE_PATH=/var/data/herahealth.db` — only if a persistent disk is attached and mounted at `/var/data`.
+   - `GEMINI_API_KEY` — optional; only if you want to enable Gemini-backed functions.
+
+### Database Persistence
+
+The app reads the database location from `DATABASE_PATH`. If using a Render persistent disk, mount it at `/var/data` and set `DATABASE_PATH=/var/data/herahealth.db`. Check Render's current plan, persistent-disk availability, and pricing before choosing this setup.
+
+Without persistent storage, SQLite data stored on an ephemeral filesystem may be lost when the service restarts or redeploys. A managed persistent database is another option. **Do not commit the database file to GitHub.**
+
+After deployment, open the public URL and test registration, sign-in, symptom CRUD, cycle tracking, insights, reminders, and the printable visit summary. Confirm that data behaves as expected after a restart if persistence is required.
+
+## Project Structure
+
+```text
+HeraHealth/
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── templates/
+└── static/
+```
+
+The project may contain additional template, static-asset, or support files. Keep all files required by the app in the repository, but do not commit `.venv/`, `__pycache__/`, secrets, or the SQLite database.
+
+## Limitations and Safety
+
+This is a hackathon MVP, not a production healthcare system. It has not undergone formal security, privacy, accessibility, or clinical validation audits. Do not use it to store real sensitive health information.
+
+Before real-world use, it would need additional protections and review, including CSRF protection, password reset and email verification, rate limiting, stronger session/security policies, privacy consent and data export/deletion controls, audit logging, secure persistent storage, and professional review of health content.
+
+Cycle intervals and symptom trends are descriptive summaries of user-entered records only. They must not be used to diagnose a condition, make contraception decisions, or replace advice from a qualified healthcare professional.
+
+## Hackathon Demo Notes
+
+- Use fictional accounts and health records in the demo.
+- Explain that trend summaries reflect user-entered data and are not medical conclusions.
+- Demonstrate the main workflow: sign in → add a symptom record → review insights and cycle calendar → prepare clinician questions → open/print the visit summary.
+- Only present Gemini as an active feature if its key is configured and the relevant API-backed function has been tested successfully.
+
+## References
+
+- World Health Organization (WHO): [https://www.who.int/](https://www.who.int/)
+- NHS: [https://www.nhs.uk/](https://www.nhs.uk/)
+- MedlinePlus: [https://medlineplus.gov/](https://medlineplus.gov/)
+- Flask documentation: [https://flask.palletsprojects.com/en/stable/](https://flask.palletsprojects.com/en/stable/)
+- Python documentation: [https://docs.python.org/3/](https://docs.python.org/3/)
+- SQLite documentation: [https://www.sqlite.org/docs.html](https://www.sqlite.org/docs.html)
+
+The health websites above are entry points to the respective resources; consult the specific pages used for any health information included in the application.
+
+---
+
+**Before submitting:** replace the two URL placeholders at the top with the real public GitHub repository URL and deployed HeraHealth URL, then verify both links in a browser.
