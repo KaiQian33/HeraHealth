@@ -172,6 +172,3 @@ Cycle intervals and symptom trends are descriptive summaries of user-entered rec
 
 The health websites above are entry points to the respective resources; consult the specific pages used for any health information included in the application.
 
----
-
-**Before submitting:** replace the two URL placeholders at the top with the real public GitHub repository URL and deployed HeraHealth URL, then verify both links in a browser.
