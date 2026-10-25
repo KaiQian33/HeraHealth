@@ -1,0 +1,25 @@
+<div class="display-backdrop" id="displayBackdrop" hidden></div>
+<section class="display-panel" id="displayPanel" role="dialog" aria-modal="true" aria-labelledby="displayTitle" hidden>
+  <div class="display-panel-heading">
+    <div><h2 id="displayTitle">Display settings</h2><p>Make HeraHealth more comfortable to use.</p></div>
+    <button class="display-close" type="button" data-display-close aria-label="Close display settings">×</button>
+  </div>
+  <div class="display-setting">
+    <label for="fontSizeSelect">Font size</label>
+    <select id="fontSizeSelect"><option value="small">Small</option><option value="default">Default</option><option value="large">Large</option></select>
+    <small>Changes text size across HeraHealth.</small>
+  </div>
+  <div class="display-setting">
+    <label for="themeSelect">Theme</label>
+    <select id="themeSelect"><option value="light">Light</option><option value="dark">Dark</option></select>
+    <small>Switch between light and dark appearance.</small>
+  </div>
+  <div class="display-setting">
+    <label for="densitySelect">Layout density</label>
+    <select id="densitySelect"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select>
+    <small>Comfortable adds space; Compact reduces card and section spacing.</small>
+  </div>
+  <div class="display-panel-footer"><span>Preferences are saved on this device.</span><button type="button" class="btn btn-outline" id="displayReset">Reset</button></div>
+</section>
+
+

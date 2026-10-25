@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Symptom Calendar · HeraHealth</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('hera-theme')||'light'}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+<body>
+<header class="app-header"><a href="{{ url_for('home') }}"><span class="theme-logo"><img class="logo-light app-logo" src="{{ url_for('static',filename='assets/herahealth-logo-light.png') }}" alt="HeraHealth"><img class="logo-dark app-logo" src="{{ url_for('static',filename='assets/herahealth-logo-dark.png') }}" alt="HeraHealth"></span></a><button class="btn btn-outline display-trigger" type="button" data-display-open aria-haspopup="dialog" aria-controls="displayPanel">Aa Display</button></header>
+<div class="app-shell">{% include 'partials/appnav.html' %}
+<main class="app-main">
+<div class="page-heading"><div><div class="eyebrow">YOUR RECORDS AT A GLANCE</div><h1>Symptom Calendar</h1><p>View your saved period dates and symptom entries together. Select a date to open the journal filtered to that day.</p></div></div>
+<section class="panel calendar-panel">
+<div class="calendar-heading"><a class="btn btn-outline" href="{{ url_for('calendar_page',month=prev_month) }}">← Previous</a><h2>{{ month.strftime('%B %Y') }}</h2><a class="btn btn-outline" href="{{ url_for('calendar_page',month=next_month) }}">Next →</a></div>
+<div class="calendar-grid calendar-weekdays">{% for day in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] %}<div>{{ day }}</div>{% endfor %}</div>
+<div class="calendar-grid calendar-days">{% for cell in cells %}{% if cell %}<a class="calendar-day {{ 'has-records' if cell.count else '' }} {{ 'has-period' if cell.has_period else '' }}" href="{{ url_for('journal',start=cell.date,end=cell.date) }}" title="{{ cell.symptoms or 'No symptom records' }}{{ ' · Period recorded' if cell.has_period else '' }}"><span class="calendar-day-number">{{ cell.day }}</span>{% if cell.has_period %}<span class="calendar-period">{% if cell.period_start %}Period start{% elif cell.period_end %}Period end{% else %}Period{% endif %}</span>{% endif %}{% if cell.count %}<span class="calendar-count">{{ cell.count }} symptom record{{ 's' if cell.count != 1 else '' }}</span><span class="calendar-severity">Max severity {{ cell.max_severity }}/10</span>{% endif %}</a>{% else %}<div class="calendar-day calendar-empty" aria-hidden="true"></div>{% endif %}{% endfor %}</div>
+<div class="calendar-summary"><div><span>Days with records</span><strong>{{ logged_days }}</strong></div><div><span>Symptom records this month</span><strong>{{ record_count }}</strong></div><div><span>Days with period records</span><strong>{{ period_day_count }}</strong></div></div>
+<div class="calendar-legend"><span><i class="legend-period"></i> Period record</span><span><i class="legend-symptom"></i> Symptom record</span></div><p class="muted-inline">A blank date means no entry was recorded in HeraHealth; it does not mean symptoms were absent. Period dates are shown only from the dates you entered. Calendar markers are descriptive only, not a health assessment.</p>
+</section></main></div>
+{% include 'partials/display_panel.html' %}{% include 'partials/footer.html' %}
+<script src="{{ url_for('static', filename='i18n.js') }}"></script></body></html>

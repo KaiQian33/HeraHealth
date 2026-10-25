@@ -1,0 +1,24 @@
+<aside class="app-sidebar">
+  <nav class="app-nav" aria-label="Main navigation">
+    <a class="{{ 'active' if page=='dashboard' else '' }}" href="{{ url_for('dashboard') }}">Overview</a>
+    <a class="{{ 'active' if page=='journal' else '' }}" href="{{ url_for('journal') }}">Symptom Journal</a>
+    <a class="{{ 'active' if page=='calendar' else '' }}" href="{{ url_for('calendar_page') }}">Symptom Calendar</a>
+    <a class="{{ 'active' if page=='cycle' else '' }}" href="{{ url_for('cycle_page') }}">Cycle Tracking</a>
+    <a class="{{ 'active' if page=='insights' else '' }}" href="{{ url_for('insights_page') }}">Insights</a>
+    <a class="{{ 'active' if page=='summary' else '' }}" href="{{ url_for('summary') }}">Visit Summary</a>
+    <a class="{{ 'active' if page=='reminders' else '' }}" href="{{ url_for('reminders_page') }}">Reminders</a>
+    <a class="{{ 'active' if page=='guidance' else '' }}" href="{{ url_for('guidance') }}">Health Guidance</a>
+    <a class="{{ 'active' if page=='assistant' else '' }}" href="{{ url_for('assistant') }}">Health Assistant</a>
+  </nav>
+  <div class="sidebar-user">
+    <a class="sidebar-user-profile" href="{{ url_for('profile') }}" aria-label="Open My Profile">
+      <span class="sidebar-avatar">{{ (current_user()['display_name'] or current_user()['email'])[0]|upper }}</span>
+      <span class="sidebar-user-name">{{ current_user()['display_name'] or current_user()['email'] }}</span>
+      <span class="sidebar-profile-mark">↗</span>
+    </a>
+    <form method="post" action="{{ url_for('logout') }}" class="sidebar-logout-form">
+      <button class="sidebar-logout" type="submit">Log out</button>
+    </form>
+  </div>
+</aside>
+

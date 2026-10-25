@@ -1,0 +1,6 @@
+<header class="site-header">
+  <a class="brand-img-link" href="{{ url_for('home') }}" aria-label="HeraHealth homepage"><span class="theme-logo"><img class="logo-light" src="{{ url_for('static', filename='assets/herahealth-logo-light.png') }}" alt="HeraHealth"><img class="logo-dark" src="{{ url_for('static', filename='assets/herahealth-logo-dark.png') }}" alt="HeraHealth"></span></a>
+  <nav class="main-nav"><a href="{{ url_for('home') }}#about">About Us</a><a href="{{ url_for('home') }}#faq">FAQ</a><a href="{{ url_for('home') }}#contact">Contact Us</a></nav>
+  <div class="header-actions"><button class="btn btn-outline display-trigger" type="button" data-display-open aria-haspopup="dialog" aria-controls="displayPanel">Aa Display</button>{% if session.get('user_id') %}<a class="btn btn-primary" href="{{ url_for('dashboard') }}">Open App →</a><form method="post" action="{{ url_for('logout') }}" style="display:inline"><button class="btn btn-outline" type="submit">Sign out</button></form>{% else %}<a class="btn btn-outline" href="{{ url_for('login') }}">Sign in</a><a class="btn btn-primary" href="{{ url_for('register') }}">Get started →</a>{% endif %}</div>
+</header>
+
