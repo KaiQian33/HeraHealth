@@ -1,7 +1,7 @@
 # HeraHealth — Women’s Healthcare MVP
 
-**Live Demo:** [Add your deployed HeraHealth URL here](YOUR_DEPLOYED_APP_URL)  
-**GitHub Repository:** [Add your public repository URL here](YOUR_PUBLIC_GITHUB_REPOSITORY_URL)
+**Live Demo:** [https://herahealth.onrender.com/](https://herahealth.onrender.com/)  
+**GitHub Repository:** [Add your public repository URL here]([https://github.com/KaiQian33/HeraHealth](https://github.com/KaiQian33/HeraHealth))
 
 HeraHealth is a women’s healthcare tracking and visit-preparation web application. It helps users organise symptom records, track menstrual-cycle dates, review descriptive summaries of their own records, and prepare questions and a printable summary for a healthcare visit.
 
